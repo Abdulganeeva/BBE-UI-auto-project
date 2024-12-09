@@ -20,6 +20,12 @@ class StartPage(BasePage):
     def cart_success_locator(self):
         return By.XPATH, '//div[contains(@class, "micro-alert-item")]'
 
+    def cart_icon_locator(self):
+        return By.CSS_SELECTOR, 'a[href="/cart_items"]'
+
+    def cart_move(self):
+        self.click(self.cart_icon_locator())
+
     # Метод для добавления продукта в корзину
     def add_product_to_cart(self, product_id):
         # Найти форму продукта

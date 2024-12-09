@@ -1,5 +1,7 @@
 import pytest
 from selenium import webdriver
+from bbe.pages.cart_page import CartPage
+from bbe.pages.order_page import OrderPage
 
 
 @pytest.fixture(scope="class")
@@ -14,5 +16,10 @@ def init_driver(request):
 
 
 @pytest.fixture(scope="class")
-def base_url():
-    return 'https://demo.yookassa.ru/'
+def cart_page(init_driver):
+    return CartPage(init_driver)
+
+
+@pytest.fixture(scope="class")
+def order_page(init_driver):
+    return OrderPage(init_driver)

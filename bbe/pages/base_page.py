@@ -1,3 +1,6 @@
+import time
+
+import pytest
 from selenium.webdriver import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -22,3 +25,33 @@ class BasePage:
 
     def open_page(self, url=''):
         self.driver.get(self.base_url + url)
+
+    def find(self, locator):
+        return self.driver.find_element(*locator)
+
+    def refresh(self):
+        self.driver.refresh()
+        WebDriverWait(self.driver, 10).until(
+            EC.visibility_of_element_located(("tag name", "body"))
+        )
+
+    def page_tittle(self, page_name):
+        page_title = self.driver.title
+        if page_title == page_name:
+            pass
+        else:
+            pytest.fail(f"Страница != {page_name}")
+
+    def clear(self, locator):
+        WebDriverWait(self.driver, 10).until(
+            EC.presence_of_element_located(locator))
+        self.find(locator).clear()
+        time.sleep(1)
+
+    def check_placeholder(self, locator, placeholder_text):
+        WebDriverWait(self.driver, 5).until(EC.visibility_of_element_located(locator))
+        placeholder = self.find(locator).get_attribute("placeholder")
+        if placeholder == placeholder_text:
+            pass
+        else:
+            pytest.fail(f"Плейсхолдер не соотвествует макету")
